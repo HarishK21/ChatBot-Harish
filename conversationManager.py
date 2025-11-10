@@ -9,7 +9,7 @@ def get_api_key():
 api_key = get_api_key() 
 if not api_key: 
     st.error("No OPENAI_API_KEY set in secrets or environment.") 
-st.stop
+st.stop()
 
 client = OpenAI(api_key = api_key)
 MODEL = "gpt-4.1-nano-2025-04-14"
@@ -102,3 +102,4 @@ for message in st.session_state.messages[1:]:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
     
+

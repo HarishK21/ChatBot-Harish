@@ -1,0 +1,104 @@
+import os
+from openai import OpenAI
+import tiktoken
+import streamlit as st
+
+def get_api_key(): 
+    return st.secrets.get("OPEN_API_KEY") or os.getenv("OPENAI_API_KEY") 
+
+api_key = get_api_key() 
+if not api_key: 
+    st.error("No OPENAI_API_KEY set in secrets or environment.") 
+st.stop
+
+client = OpenAI(api_key = api_key)
+MODEL = "gpt-4.1-nano-2025-04-14"
+TEMPERATURE = 0.7
+MAX_TOKENS = 100
+SYSTEM_PROMPT = "You are an angry and arrogant assistant who thinks humans are dumb."
+messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+TOKEN_BUDGET = 100
+
+def get_encoding(model):
+    try:
+        return tiktoken.encoding_for_model(model)
+    except KeyError:
+        print(f"Warning: Tokenizer for model '{model}' not found. Falling back to 'cl100k_base'.")
+        return tiktoken.get_encoding("cl100k_base")
+
+ENCODING = get_encoding(MODEL)
+
+def count_tokens(text):
+    return len(ENCODING.encode(text))
+
+def total_tokens_used(messages):
+    try:
+        return sum(count_tokens(msg["content"]) for msg in messages)
+    except Exception as e:
+        print(f"[token count error]: {e}")
+        return 0
+
+#Removes chat history over time
+def enforce_token_budget(messages, budget=TOKEN_BUDGET):
+    try:
+        while total_tokens_used(messages) > budget:
+            if len(messages) <= 2:
+                break
+            messages.pop(1)
+    except Exception as e:
+        print(f"[token budget error]: {e}")
+
+#Response Object
+def chat(user_input, temperature, max_tokens):   
+    messages = st.session_state.messages
+    messages.append({"role": "user", "content": user_input})
+    enforce_token_budget(messages)
+    
+    with st.spinner("Thinking..."):
+        response = client.chat.completions.create(
+            model = MODEL, 
+            messages = messages,
+            temperature = temperature,
+            max_tokens = int(max_tokens)
+        )
+        
+    reply = response.choices[0].message.content
+    messages.append({"role": "assistant", "content": reply})
+    return reply
+    
+#Streamlit
+st.title("A Not So Friendly Chatbot")
+st.sidebar.header("Options")
+st.sidebar.write("This is a demo")
+
+max_tokens = st.sidebar.slider("Max Tokens", 1, 250, 100)
+temperature = st.sidebar.slider("Temperature", 0.0, 1.0, 0.7)
+system_message_type = st.sidebar.selectbox("System Message", ("Arrogant Assistant", "Custom"))
+
+if system_message_type == "Arrogant Assistant":
+    SYSTEM_PROMPT = "You are an angry and arrogant assistant who thinks humans are dumb."
+elif system_message_type == "Custom":
+    SYSTEM_PROMPT = st.sidebar.text_area("Custom System Message", "Customize your AI Agent here.")
+else:
+    SYSTEM_PROMPT = "You are a helpful assistant."
+    
+st.write(f"{SYSTEM_PROMPT}")
+
+if "messages" not in st.session_state:
+    st.session_state.messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    
+if st.sidebar.button("Apply New System Message"):
+    st.session_state.messages[0] = {"role": "system", "content": SYSTEM_PROMPT}
+    st.success("System message updated.")
+    
+if st.sidebar.button("Reset Conversation"):
+    st.session_state.messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    st.success("Conversation Reset.")
+
+if prompt := st.chat_input("What is up?"):
+    reply = chat(prompt, temperature = temperature, max_tokens = max_tokens)
+    
+for message in st.session_state.messages[1:]:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+    

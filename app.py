@@ -3,12 +3,6 @@ from openai import OpenAI
 import tiktoken
 import streamlit as st
 
-def loadStyles(path: str):
-    with open(path) as f:
-        css = f"<style>{f.read()}</style>"
-        st.markdown(css, unsafe_allow_html=True)
-
-loadStyles("styles.css")
 
 def get_api_key(): 
     return st.secrets.get("OPEN_API_KEY") or os.getenv("OPENAI_API_KEY") 

@@ -65,8 +65,7 @@ def chat(user_input, temperature, max_tokens):
     
 #Streamlit
 st.title("A Not So Friendly Chatbot")
-st.sidebar.header("Options")
-st.sidebar.write("This is a demo")
+st.sidebar.header("Settings")
 
 max_tokens = st.sidebar.slider("Max Tokens", 1, 250, 100)
 temperature = st.sidebar.slider("Temperature", 0.0, 1.0, 0.7)

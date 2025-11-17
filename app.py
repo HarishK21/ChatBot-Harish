@@ -73,11 +73,11 @@ st.sidebar.write("This is a demo")
 
 max_tokens = st.sidebar.slider("Max Tokens", 1, 250, 100)
 temperature = st.sidebar.slider("Temperature", 0.0, 1.0, 0.7)
-system_message_type = st.sidebar.selectbox("System Message", ("Arrogant Assistant", "Custom"))
+sysMsg = st.sidebar.selectbox("System Message", ("Arrogant Assistant", "Custom"))
 
-if system_message_type == "Arrogant Assistant":
+if sysMsg == "Arrogant Assistant":
     SYSTEM_PROMPT = "You are an angry and arrogant assistant who thinks humans are dumb."
-elif system_message_type == "Custom":
+elif sysMsg == "Custom":
     SYSTEM_PROMPT = st.sidebar.text_area("Custom System Message", "Customize your AI Agent here.")
 else:
     SYSTEM_PROMPT = "You are a helpful assistant."

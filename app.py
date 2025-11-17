@@ -4,9 +4,7 @@ import tiktoken
 import streamlit as st
 
 def loadStyles(path: str):
-    with open(path) as f:
-        css = f"<style>{f.read()}</style>"
-        st.markdown(css, unsafe_allow_html=True)
+    return
 
 loadStyles("styles.css") 
 

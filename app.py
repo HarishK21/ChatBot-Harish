@@ -4,9 +4,11 @@ import tiktoken
 import streamlit as st
 
 def loadStyles(path: str):
-    return  
+    with open(path) as f:
+        css = f"<style>{f.read()}</style>"
+        st.markdown(css, unsafe_allow_html=True)
 
-# loadStyles("styles.css")  
+loadStyles("styles.css") 
 
 
 def get_api_key(): 

@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+.stApp {
+    background-color: #f3f4f6;
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.block-container {
+    max-width: 900px;
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #111827;
+}
+
+.stMarkdown p {
+    font-size: 15px;
+    color: #4b5563;
+}
+
+section[data-testid="stSidebar"] {
+    background-color: #ffffff;
+    border-right: 1px solid #e5e7eb;
+}
+
+section[data-testid="stSidebar"] h1,
+section[data-testid="stSidebar"] h2,
+section[data-testid="stSidebar"] h3 {
+    font-weight: 600;
+    color: #111827;
+}
+
+section[data-testid="stSidebar"] label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.stButton > button {
+    border-radius: 999px;
+    border: 1px solid #e5e7eb;
+    background-color: #f9fafb;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 16px;
+    color: #111827;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+
+.stButton > button:hover {
+    background-color: #e5e7eb;
+}
+
+[data-testid="stChatMessage"] {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+[data-testid="stChatMessage"] .stMarkdown {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 12px;
+    max-width: 100%;
+    font-size: 15px;
+    line-height: 20px;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+
+[data-testid="stChatInput"] {
+    background-color: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+}
+
+[data-testid="stChatInput"] textarea {
+    background-color: #ffffff;
+    border-radius: 999px;
+    border: 1px solid #d1d5db;
+    padding: 8px 12px;
+    font-size: 14px;
+}
+
+[data-testid="stChatInput"] button {
+    border-radius: 999px;
+    border: 1px solid #111827;
+    background-color: #111827;
+    color: #f9fafb;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 4px 14px;
+}
+
+[data-testid="stChatInput"] button:hover {
+    background-color: #374151;
+}

@@ -13,10 +13,7 @@ if not api_key:
 
 client = OpenAI(api_key = api_key)
 MODEL = "gpt-4.1-nano-2025-04-14"
-TEMPERATURE = 0.7
-MAX_TOKENS = 100
 SYSTEM_PROMPT = "You are an angry and arrogant assistant who thinks humans are dumb."
-messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 TOKEN_BUDGET = 100
 
 def get_encoding(model):

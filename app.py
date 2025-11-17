@@ -49,9 +49,9 @@ def enforce_token_budget(messages, budget=TOKEN_BUDGET):
         print(f"[token budget error]: {e}")
 
 #Response Object
-def chat(input, temperature, maxTokens):   
+def chat(user_input, temperature, max_tokens):   
     messages = st.session_state.messages
-    messages.append({"role": "user", "content": input})
+    messages.append({"role": "user", "content": user_input})
     enforce_token_budget(messages)
     
     with st.spinner("Thinking..."):
@@ -59,7 +59,7 @@ def chat(input, temperature, maxTokens):
             model = MODEL, 
             messages = messages,
             temperature = temperature,
-            maxTokens = int(maxTokens)
+            max_tokens = int(max_tokens)
         )
         
     reply = response.choices[0].message.content
@@ -71,13 +71,13 @@ st.title("A Not So Friendly Chatbot")
 st.sidebar.header("Options")
 st.sidebar.write("This is a demo")
 
-maxTokens = st.sidebar.slider("Max Tokens", 1, 250, 100)
+max_tokens = st.sidebar.slider("Max Tokens", 1, 250, 100)
 temperature = st.sidebar.slider("Temperature", 0.0, 1.0, 0.7)
-sysMsg = st.sidebar.selectbox("System Message", ("Arrogant Assistant", "Custom"))
+system_message_type = st.sidebar.selectbox("System Message", ("Arrogant Assistant", "Custom"))
 
-if sysMsg == "Arrogant Assistant":
+if system_message_type == "Arrogant Assistant":
     SYSTEM_PROMPT = "You are an angry and arrogant assistant who thinks humans are dumb."
-elif sysMsg == "Custom":
+elif system_message_type == "Custom":
     SYSTEM_PROMPT = st.sidebar.text_area("Custom System Message", "Customize your AI Agent here.")
 else:
     SYSTEM_PROMPT = "You are a helpful assistant."
@@ -96,7 +96,7 @@ if st.sidebar.button("Reset Conversation"):
     st.success("Conversation Reset.")
 
 if prompt := st.chat_input("What is up?"):
-    reply = chat(prompt, temperature = temperature, maxTokens = maxTokens)
+    reply = chat(prompt, temperature = temperature, max_tokens = max_tokens)
     
 for message in st.session_state.messages[1:]:
     with st.chat_message(message["role"]):

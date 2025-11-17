@@ -49,7 +49,7 @@ def enforce_token_budget(messages, budget=TOKEN_BUDGET):
         print(f"[token budget error]: {e}")
 
 #Response Object
-def chat(user_input, temperature, max_tokens):   
+def chat(user_input, temperature, maxTokens):   
     messages = st.session_state.messages
     messages.append({"role": "user", "content": user_input})
     enforce_token_budget(messages)
@@ -59,7 +59,7 @@ def chat(user_input, temperature, max_tokens):
             model = MODEL, 
             messages = messages,
             temperature = temperature,
-            max_tokens = int(max_tokens)
+            maxTokens = int(maxTokens)
         )
         
     reply = response.choices[0].message.content
@@ -71,7 +71,7 @@ st.title("A Not So Friendly Chatbot")
 st.sidebar.header("Options")
 st.sidebar.write("This is a demo")
 
-max_tokens = st.sidebar.slider("Max Tokens", 1, 250, 100)
+maxTokens = st.sidebar.slider("Max Tokens", 1, 250, 100)
 temperature = st.sidebar.slider("Temperature", 0.0, 1.0, 0.7)
 sysMsg = st.sidebar.selectbox("System Message", ("Arrogant Assistant", "Custom"))
 
@@ -96,7 +96,7 @@ if st.sidebar.button("Reset Conversation"):
     st.success("Conversation Reset.")
 
 if prompt := st.chat_input("What is up?"):
-    reply = chat(prompt, temperature = temperature, max_tokens = max_tokens)
+    reply = chat(prompt, temperature = temperature, maxTokens = maxTokens)
     
 for message in st.session_state.messages[1:]:
     with st.chat_message(message["role"]):

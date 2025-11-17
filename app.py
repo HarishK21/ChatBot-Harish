@@ -49,9 +49,9 @@ def enforce_token_budget(messages, budget=TOKEN_BUDGET):
         print(f"[token budget error]: {e}")
 
 #Response Object
-def chat(user_input, temperature, maxTokens):   
+def chat(input, temperature, maxTokens):   
     messages = st.session_state.messages
-    messages.append({"role": "user", "content": user_input})
+    messages.append({"role": "user", "content": input})
     enforce_token_budget(messages)
     
     with st.spinner("Thinking..."):
